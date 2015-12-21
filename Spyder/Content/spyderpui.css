@@ -1,0 +1,102 @@
+﻿.ui-widget {
+	font-size:12px !important;
+}
+
+img#loading {
+	position:absolute;*/
+	display:none;
+	top:40%;
+	right:40%;
+}
+
+#left_tab_view {
+	width:897px;
+}
+
+#left_tab_view~p {
+	float:left;
+}
+
+#action_buttons {
+	float:left;
+}
+
+form#search_form {
+	float:right;
+}
+
+/* Datatable */
+#datatable {
+	height:260px;
+}
+
+#datatable tr > td:first-of-type, #datatable thead > th:first-of-type {
+	max-width: 110px;
+}
+
+#datatable tr > td:nth-of-type(2), #datatable thead > th:nth-of-type(2) {
+	text-align:center;
+	max-width:90px;
+}
+
+#datatable tr > td:nth-of-type(3), #datatable thead > th:nth-of-type(3) {
+	max-width: 370px; 
+}
+
+#datatable tr > td:last-of-type, #datatable thead > th:last-of-type {
+	text-align:right;
+	max-width:50px;
+}
+
+/* Product form styles */
+form#product_form {
+	margin-top:10px;
+}
+
+form#product_form > .pui-dialog-buttonpane {
+	margin-top:15px;
+}
+
+.form_entry{
+	margin-bottom:5px;
+}
+.form_entry label{
+	display:inline-block;
+	width:108px;
+	text-align:right;
+	margin-right:5px;
+}
+
+.form_entry label.textarea{
+	vertical-align:top;
+}
+.form_entry label.required:before { 
+	content:" * ";
+	color:red;
+}
+
+.form_entry input, .form_entry textarea {
+	width:176px;
+}
+
+/* Panel styles */
+div.tab_panel {
+	height:270px;
+}
+
+div.tab_panel .ui-widget-content a {
+	color:#6495ED;
+}
+
+div.tab_panel .ui-widget-content p {
+
+}
+
+/* PUI Components override */
+.pui-tabview-left > .pui-tabview-nav {
+	width:17%;
+}
+
+.pui-tabview-left > .pui-tabview-panels {
+	width:82%;
+}

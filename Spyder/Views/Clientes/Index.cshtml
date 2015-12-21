@@ -1,0 +1,212 @@
+﻿
+@{
+    ViewBag.Title = "Spyder";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Cadastro de Carros</title>
+
+    <link href="~/Content/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.css" type="text/css" rel="stylesheet" />
+    <link href="~/Content/primeui-2.2-min.css" type="text/css" rel="stylesheet" />
+    <link href="~/Content/themes/cupertino/theme.css" type="text/css" rel="stylesheet" />
+    <link href="~/Content/spyderpui.css" type="text/css" rel="stylesheet"/>
+
+    <script src="~/Scripts/jquery-1.11.3.min.js" vtype="text/javascript"></script>
+    <script src="~/Scripts/jquery-ui.js" type="text/javascript"></script>
+    <script src="~/Scripts/primeui-2.2-min.js" type="text/javascript"></script>
+
+    <style type="text/css">
+        .ui-widget {
+            font-family: Arial;
+            font-size: 13px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            var localData = [
+        { 'brand': 'Volkswagen', 'year': 2012, 'color': 'White', 'vin': 'dsad231ff' },
+        { 'brand': 'Audi', 'year': 2011, 'color': 'Black', 'vin': 'gwregre345' },
+        { 'brand': 'Renault', 'year': 2005, 'color': 'Gray', 'vin': 'h354htr' },
+        { 'brand': 'BMW', 'year': 2003, 'color': 'Blue', 'vin': 'j6w54qgh' },
+        { 'brand': 'Mercedes', 'year': 1995, 'color': 'White', 'vin': 'hrtwy34' },
+        { 'brand': 'Volvo', 'year': 2005, 'color': 'Black', 'vin': 'jejtyj' },
+        { 'brand': 'Honda', 'year': 2012, 'color': 'Yellow', 'vin': 'g43gr' },
+        { 'brand': 'Jaguar', 'year': 2013, 'color': 'White', 'vin': 'greg34' },
+        { 'brand': 'Ford', 'year': 2000, 'color': 'Black', 'vin': 'h54hw5' },
+        { 'brand': 'Fiat', 'year': 2013, 'color': 'Red', 'vin': '245t2s' }
+            ];
+            $('#default').puipanel();
+            $('#options').puipanel({
+                toggleable: true,
+                closable: true
+            });
+            $('#icononly').puibutton({
+                icon: 'fa-save'
+            });
+
+            $('#npttext').puiinputtext();
+            $('#nptbrand').puiinputtext();
+            $('#nptyear').puiinputtext();
+            $('#nptcolor').puiinputtext();
+            $('#nptvin').puiinputtext();
+
+            $('#btnincluir').puibutton({
+                icon: 'fa-plus'
+            });
+            $('#btneditar').puibutton({
+                icon: 'fa-pencil'
+            });
+            $('#btnexcluir').puibutton({
+                icon: 'fa-trash'
+            });
+            $('#tbllocal').puidatatable({
+                caption: 'Carros',
+                paginator: {
+                    rows: 10
+                },
+                columns: [                    
+                    { field: 'brand', headerText: 'Brand', sortable: true },
+                    { field: 'year', headerText: 'Year', sortable: true },
+                    { field: 'color', headerText: 'Color', sortable: true },
+                    { field: 'vin', headerText: 'Vin', sortable: true }
+                ],
+                datasource: localData,
+                selectionMode: 'single'
+            });
+
+
+            $('#bt_edit').puibutton({
+                icon: 'fa-pencil'
+            }).click(function () {
+                var selections = $('#tbllocal').puidatatable('getSelection');
+                if (selections.length === 1) {
+                    if (selections[0]) {
+                        $("input[name='brand']").val(selections[0].brand);
+                        $("input[name='year']").val(selections[0].year);
+                        $("input[name='color']").val(selections[0].color);
+                        $("input[name='vin']").val(selections[0].vin);
+                        $('#edit_dialog_label').text("Editar produto " + selections[0].vin);
+                        $('#edit_dialog').puidialog('show');
+                    }
+                } else {
+                    $('#messages').puigrowl('show', [{ severity: 'error', summary: 'Edição de Carro', detail: 'Por favor, selecione um produto!' }]);
+
+                    $('#btn-error').puibutton().click(function () {
+                        addMessage('error', { summary: 'Message Title', detail: 'Message Detail here.' });
+                    });
+
+                }
+            });
+            $('#edit_dialog').puidialog({
+                resizable: false,
+                showEffect: 'fade',
+                hideEffect: 'fade',
+                minimizable: false,
+                maximizable: false,
+                modal: true,
+                width: 350
+            });
+            /* SAVE BUTTON ACTION */
+            $('#edit_dialog #bt_save').puibutton({ // Fire the submit event of the dialog form 
+                icon: 'ui-icon-disk'
+            });
+
+            $('#edit_dialog #bt_cancel').puibutton({
+                icon: 'ui-icon-close'
+            }).click(function () {
+                $('#edit_dialog').puidialog('hide');
+            });
+
+            /********* Remove item Dialog **********/
+            $('#remove_dialog').puidialog({
+                resizable: false,
+                showEffect: 'fade',
+                hideEffect: 'fade',
+                minimizable: false,
+                maximizable: false,
+                modal: true,
+                width: 335
+            });
+            /* YES BUTTON ACTION */
+            $('#remove_dialog #bt_remove_yes').puibutton({
+                icon: 'fa-check'
+            }).click(function () {
+                var selections = $('#tbllocal').puidatatable('getSelection');
+                var product = new Object();
+                product.product_id = selections[0].vin;
+                $.ajax({
+                    type: "POST",
+                    url: 'services/remove_data.php',
+                    data: product,
+                    dataType: "json",
+                    context: this,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#tbllocal').puidatatable('refresh', -1);
+                            $('#messages').puigrowl('show', [{ severity: 'info', summary: 'Remove product', detail: response.msg }]);
+                            $('#remove_dialog').puidialog('hide');
+                        } else {
+                            $('#messages').puigrowl('show', [{ severity: 'error', summary: 'Remove product', detail: response.msg }]);
+                        }
+                    },
+                    error: function (response) {
+                        $('#messages').puigrowl('show', [{ severity: 'error', summary: 'Remover ', detail: 'Ups! Impossível remover o produto selecionado.' }]);
+                    }
+                });
+            });
+            /* NO BUTTON ACTION */
+            $('#remove_dialog #bt_remove_no').puibutton({
+                icon: 'fa-close'
+            }).click(function () {
+                $('#remove_dialog').puidialog('hide');
+            });
+
+            $('#product_form').submit(function (event) {
+                var result = $("#product_form")[0].checkValidity();
+                if (result) {
+                    var product = $('#product_form').serializeArray();
+                    $.ajax({
+                        type: "POST",
+                        url: "services/save_data.php",
+                        data: product,
+                        dataType: "json",
+                        context: this,
+                        success: function (response) {
+                            if (response.success) {
+                                $('#messages').puigrowl('show', [{ severity: 'info', summary: 'Salvar produto', detail: response.msg }]);
+                                $('#edit_dialog').puidialog('hide');
+                                if (response.action === 'new') {
+                                    $('#tbllocal').puidatatable('refresh', +1);
+                                } else {
+                                    $('#tbllocal').puidatatable('paginate');
+                                }
+                            } else {
+                                $('#messages').puigrowl('show', [{ severity: 'error', summary: 'Salvar produto', detail: response.msg }]);
+                            }
+                        },
+                        error: function (response) {
+                            $('#messages').puigrowl('show', [{ severity: 'error', summary: 'Salvar produto', detail: 'Ups! Impossível salvar os dados.' }]);
+                        }
+                    });
+                }
+                event.preventDefault();
+            });
+
+            $('#messages').puigrowl();
+        });
+
+    </script>
+
+</head>
+<body>
+    <div id="default" title="Cadastro de Carros" style="margin-bottom:20px">
+        @Html.Action("List")
+    </div>
+</body>
+</html>

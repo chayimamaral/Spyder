@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Estado>
+  <item>
+    <id>1</id>
+    <sigla>AL</sigla>
+    <descricao>Alagoas</descricao>
+  </item>
+  <item>
+    <id>2</id>
+    <sigla>AC</sigla>
+    <descricao>Acre</descricao>
+  </item>
+  <item>
+    <id>3</id>
+    <sigla>BA</sigla>
+    <descricao>Bahia</descricao>
+  </item>
+  <item>
+    <id>4</id>
+    <sigla>CE</sigla>
+    <descricao>Ceará</descricao>
+  </item>
+  <item>
+    <id>5</id>
+    <sigla>PI</sigla>
+    <descricao>Piaui</descricao>
+  </item>
+  <item>
+    <id>6</id>
+    <sigla>PE</sigla>
+    <descricao>Pernambuco</descricao>
+  </item>
+  <item>
+    <id>7</id>
+    <sigla>PB</sigla>
+    <descricao>Paraíba</descricao>
+  </item>
+  <item>
+    <id>8</id>
+    <sigla>MA</sigla>
+    <descricao>Maranhão</descricao>
+  </item>
+  <item>
+    <id>9</id>
+    <sigla>RN</sigla>
+    <descricao>Rio Grande do Norte</descricao>
+  </item>
+  <item>
+    <id>10</id>
+    <sigla>MG</sigla>
+    <descricao>Minas Gerais</descricao>
+  </item>
+  <item>
+    <id>11</id>
+    <sigla>ES</sigla>
+    <descricao>Espírito Santo</descricao>
+  </item>
+  <item>
+    <id>12</id>
+    <sigla>RJ</sigla>
+    <descricao>Rio de Janeiro</descricao>
+  </item>
+  <item>
+    <id>13</id>
+    <sigla>SP</sigla>
+    <descricao>São Paulo</descricao>
+  </item>
+  <item>
+    <id>14</id>
+    <sigla>PR</sigla>
+    <descricao>Paraná</descricao>
+  </item>
+  <item>
+    <id>15</id>
+    <sigla>SC</sigla>
+    <descricao>Santa Catarina</descricao>
+  </item>
+  <item>
+    <id>16</id>
+    <sigla>RS</sigla>
+    <descricao>Rio Grande do Sul</descricao>
+  </item>
+</Estado>

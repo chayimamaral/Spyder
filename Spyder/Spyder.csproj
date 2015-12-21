@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{79D4A5FE-5030-4B04-B30C-646A3A403419}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Spyder</RootNamespace>
+    <AssemblyName>Spyder</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Estados.xml" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\orderlist\orderlist.css" />
+    <Content Include="Content\spyderpui.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\primeui-2.2-min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\themes\aristo\images\ui-bg_flat_0_2d5972_40x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_flat_0_4f4f4f_40x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_flat_100_ffffff_40x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_highlight-hard_80_85b2cb_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_highlight-hard_80_c4c4c4_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_highlight-hard_80_e3e3e3_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_highlight-soft_100_c4c4c4_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_highlight-soft_75_85b2cb_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_inset-hard_65_85b2cb_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_inset-hard_65_c4c4c4_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_2d5972_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_38667f_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_3a6983_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_616161_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_898989_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\aristo\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\aristo\theme.css" />
+    <Content Include="Content\themes\bluesky\images\active.png" />
+    <Content Include="Content\themes\bluesky\images\default.png" />
+    <Content Include="Content\themes\bluesky\images\header.png" />
+    <Content Include="Content\themes\bluesky\images\save.png" />
+    <Content Include="Content\themes\bluesky\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Content\themes\bluesky\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="Content\themes\bluesky\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Content\themes\bluesky\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Content\themes\bluesky\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Content\themes\bluesky\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Content\themes\bluesky\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\bluesky\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Content\themes\bluesky\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Content\themes\bluesky\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\bluesky\theme.css" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Content\themes\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Content\themes\cupertino\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="Content\themes\cupertino\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\cupertino\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Content\themes\cupertino\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Content\themes\cupertino\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\cupertino\theme.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\js\accordion\accordion.js" />
+    <Content Include="Scripts\js\autocomplete\autocomplete.js" />
+    <Content Include="Scripts\js\button\button.js" />
+    <Content Include="Scripts\js\carousel\carousel.js" />
+    <Content Include="Scripts\js\checkbox\checkbox.js" />
+    <Content Include="Scripts\js\core\core.js" />
+    <Content Include="Scripts\js\datagrid\datagrid.js" />
+    <Content Include="Scripts\js\datatable\datatable.js" />
+    <Content Include="Scripts\js\dialog\dialog.js" />
+    <Content Include="Scripts\js\dropdown\dropdown.js" />
+    <Content Include="Scripts\js\fieldset\fieldset.js" />
+    <Content Include="Scripts\js\galleria\galleria.js" />
+    <Content Include="Scripts\js\growl\growl.js" />
+    <Content Include="Scripts\js\inputtextarea\inputtextarea.js" />
+    <Content Include="Scripts\js\inputtext\inputtext.js" />
+    <Content Include="Scripts\js\lightbox\lightbox.js" />
+    <Content Include="Scripts\js\listbox\listbox.js" />
+    <Content Include="Scripts\js\menu\menu.js" />
+    <Content Include="Scripts\js\messages\messages.js" />
+    <Content Include="Scripts\js\notify\notify.js" />
+    <Content Include="Scripts\js\paginator\paginator.js" />
+    <Content Include="Scripts\js\panel\panel.js" />
+    <Content Include="Scripts\js\password\password.js" />
+    <Content Include="Scripts\js\picklist\picklist.js" />
+    <Content Include="Scripts\js\progressbar\progressbar.js" />
+    <Content Include="Scripts\js\radiobutton\radiobutton.js" />
+    <Content Include="Scripts\js\rating\rating.js" />
+    <Content Include="Scripts\js\spinner\spinner.js" />
+    <Content Include="Scripts\js\splitbutton\splitbutton.js" />
+    <Content Include="Scripts\js\sticky\sticky.js" />
+    <Content Include="Scripts\js\tabview\tabview.js" />
+    <Content Include="Scripts\js\terminal\terminal.js" />
+    <Content Include="Scripts\js\togglebutton\togglebutton.js" />
+    <Content Include="Scripts\js\tooltip\tooltip.js" />
+    <Content Include="Scripts\js\treetable\treetable.js" />
+    <Content Include="Scripts\js\tree\tree.js" />
+    <Content Include="Scripts\spyderjs\estado\edit.js" />
+    <Content Include="Scripts\spyderjs\estado\index.js" />
+    <Content Include="Scripts\spyderjs\layout.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\plugins\cursorposition.js" />
+    <Content Include="Scripts\plugins\easing.js" />
+    <Content Include="Scripts\plugins\jquery.mousewheel.js" />
+    <Content Include="Scripts\plugins\rangyinput.js" />
+    <Content Include="Scripts\plugins\touchswipe.js" />
+    <Content Include="Scripts\primeui-2.2-min.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\EstadosController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\Estado.cs" />
+    <Compile Include="Models\EstadoReporitory.cs" />
+    <Compile Include="Models\IEstadoRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Clientes\List.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Estados\Index.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\css\accordion\" />
+    <Folder Include="Content\css\autocomplete\" />
+    <Folder Include="Content\css\button\" />
+    <Folder Include="Content\css\carousel\" />
+    <Folder Include="Content\css\checkbox\" />
+    <Folder Include="Content\css\core\" />
+    <Folder Include="Content\css\datagrid\" />
+    <Folder Include="Content\css\datatable\" />
+    <Folder Include="Content\css\dialog\" />
+    <Folder Include="Content\css\dropdown\" />
+    <Folder Include="Content\css\fieldset\" />
+    <Folder Include="Content\css\galleria\" />
+    <Folder Include="Content\css\grid\" />
+    <Folder Include="Content\css\growl\" />
+    <Folder Include="Content\css\inputtextarea\" />
+    <Folder Include="Content\css\inputtext\" />
+    <Folder Include="Content\css\lightbox\" />
+    <Folder Include="Content\css\listbox\" />
+    <Folder Include="Content\css\menu\" />
+    <Folder Include="Content\css\messages\" />
+    <Folder Include="Content\css\notify\" />
+    <Folder Include="Content\css\paginator\" />
+    <Folder Include="Content\css\panel\" />
+    <Folder Include="Content\css\password\" />
+    <Folder Include="Content\css\picklist\" />
+    <Folder Include="Content\css\progressbar\" />
+    <Folder Include="Content\css\radiobutton\" />
+    <Folder Include="Content\css\rating\" />
+    <Folder Include="Content\css\spinner\" />
+    <Folder Include="Content\css\splitbutton\" />
+    <Folder Include="Content\css\tabview\" />
+    <Folder Include="Content\css\terminal\" />
+    <Folder Include="Content\css\tooltip\" />
+    <Folder Include="Content\css\treetable\" />
+    <Folder Include="Content\css\tree\" />
+    <Folder Include="Scripts\spyderjs\home\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>63159</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63159/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

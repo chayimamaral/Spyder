@@ -1,0 +1,47 @@
+﻿
+@{
+  ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="~/Scripts/spyderjs/estado/index.js"></script>
+</head>
+<body>
+    <div id="default" title="Cadastro de Estados" style="margin-bottom:20px">        
+        <div id="messages"></div>
+
+        <div id="tblestados"></div>
+    </div>
+    <br/>
+    <div>
+        <button id="btnincluir">Incluir</button>
+        <button id="bt_edit">Editar</button>
+        <button id="btnexcluir">Excluir</button>
+    </div>
+    <div id="edit_dialog" title="Estado">
+        <form id="estado_form">
+            <div class="form_entry">
+                <label class="required">Sigla:</label>
+                <input id="nptsigla" name="sigla" maxlength="2" required></input>
+            </div>
+            <div class="form_entry">
+                <label class="required">Descrição:</label>
+                <input id="nptdescricao" name="descricao" maxlength="40" required></input>
+            </div>
+            <div class="pui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button id="bt_save" type="submit">Salvar</button>
+                <button id="bt_cancel" type="button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+</html>
+
+
+
+
