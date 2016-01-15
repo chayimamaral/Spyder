@@ -1,84 +1,246 @@
-$(function(){$.widget("primeui.puilistbox",{options:{scrollHeight:200},_create:function(){this.element.wrap('<div class="pui-listbox pui-inputtext ui-widget ui-widget-content ui-corner-all"><div class="ui-helper-hidden-accessible"></div></div>');
-this.container=this.element.parent().parent();
-this.listContainer=$('<ul class="pui-listbox-list"></ul>').appendTo(this.container);
-this.options.multiple=this.element.prop("multiple");
-if(this.options.data){this._populateInputFromData()
-}this._populateContainerFromOptions();
-this._restrictHeight();
-this._bindEvents()
-},_populateInputFromData:function(){for(var b=0;
-b<this.options.data.length;
-b++){var a=this.options.data[b];
-if(a.label){this.element.append('<option value="'+a.value+'">'+a.label+"</option>")
-}else{this.element.append('<option value="'+a+'">'+a+"</option>")
-}}},_populateContainerFromOptions:function(){this.choices=this.element.children("option");
-for(var b=0;
-b<this.choices.length;
-b++){var a=this.choices.eq(b),c=this.options.content?this.options.content.call(this,this.options.data[b]):a.text();
-this.listContainer.append('<li class="pui-listbox-item ui-corner-all">'+c+"</li>")
-}this.items=this.listContainer.find(".pui-listbox-item:not(.ui-state-disabled)")
-},_restrictHeight:function(){if(this.container.height()>this.options.scrollHeight){this.container.height(this.options.scrollHeight)
-}},_bindEvents:function(){var a=this;
-this.items.on("mouseover.puilistbox",function(){var b=$(this);
-if(!b.hasClass("ui-state-highlight")){b.addClass("ui-state-hover")
-}}).on("mouseout.puilistbox",function(){$(this).removeClass("ui-state-hover")
-}).on("dblclick.puilistbox",function(b){a.element.trigger("dblclick");
-PUI.clearSelection();
-b.preventDefault()
-}).on("click.puilistbox",function(b){if(a.options.multiple){a._clickMultiple(b,$(this))
-}else{a._clickSingle(b,$(this))
-}});
-this.element.on("focus.puilistbox",function(){a.container.addClass("ui-state-focus")
-}).on("blur.puilistbox",function(){a.container.removeClass("ui-state-focus")
-})
-},_clickSingle:function(b,a){var c=this.items.filter(".ui-state-highlight");
-if(a.index()!==c.index()){if(c.length){this.unselectItem(c)
-}this.selectItem(a);
-this.element.trigger("change")
-}this.element.trigger("click");
-PUI.clearSelection();
-b.preventDefault()
-},_clickMultiple:function(a,j){var c=this.items.filter(".ui-state-highlight"),f=(a.metaKey||a.ctrlKey),b=(!f&&c.length===1&&c.index()===j.index());
-if(!a.shiftKey){if(!f){this.unselectAll()
-}if(f&&j.hasClass("ui-state-highlight")){this.unselectItem(j)
-}else{this.selectItem(j);
-this.cursorItem=j
-}}else{if(this.cursorItem){this.unselectAll();
-var g=j.index(),k=this.cursorItem.index(),h=(g>k)?k:g,e=(g>k)?(g+1):(k+1);
-for(var d=h;
-d<e;
-d++){this.selectItem(this.items.eq(d))
-}}else{this.selectItem(j);
-this.cursorItem=j
-}}if(!b){this.element.trigger("change")
-}this.element.trigger("click");
-PUI.clearSelection();
-a.preventDefault()
-},unselectAll:function(){this.items.removeClass("ui-state-highlight ui-state-hover");
-this.choices.filter(":selected").prop("selected",false)
-},selectItem:function(b){var a=null;
-if($.type(b)==="number"){a=this.items.eq(b)
-}else{a=b
-}a.addClass("ui-state-highlight").removeClass("ui-state-hover");
-this.choices.eq(a.index()).prop("selected",true);
-this._trigger("itemSelect",null,this.choices.eq(a.index()))
-},unselectItem:function(b){var a=null;
-if($.type(b)==="number"){a=this.items.eq(b)
-}else{a=b
-}a.removeClass("ui-state-highlight");
-this.choices.eq(a.index()).prop("selected",false);
-this._trigger("itemUnselect",null,this.choices.eq(a.index()))
-},_setOption:function(a,b){$.Widget.prototype._setOption.apply(this,arguments);
-if(a==="data"){this.element.empty();
-this.listContainer.empty();
-this._populateInputFromData();
-this._populateContainerFromOptions();
-this._restrictHeight();
-this._bindEvents()
-}},_unbindEvents:function(){this.items.off("mouseover.puilistbox click.puilistbox dblclick.puilistbox")
-},disable:function(){this._unbindEvents();
-this.items.addClass("ui-state-disabled")
-},enable:function(){this._bindEvents();
-this.items.removeClass("ui-state-disabled")
-}})
-});
+/**
+ * PrimeUI listvox widget
+ */
+(function() {
+
+    $.widget("primeui.puilistbox", {
+       
+        options: {
+            scrollHeight: 200,
+            content: null,
+            data: null,
+            template: null,
+            style: null,
+            styleClass: null
+        },
+
+        _create: function() {
+            this.element.wrap('<div class="pui-listbox pui-inputtext ui-widget ui-widget-content ui-corner-all"><div class="ui-helper-hidden-accessible"></div></div>');
+            this.container = this.element.parent().parent();
+            this.listContainer = $('<ul class="pui-listbox-list"></ul>').appendTo(this.container);
+            this.options.multiple = this.element.prop("multiple");
+
+            if(this.options.style) {
+                this.container.attr('style', this.options.style);
+            }
+            
+            if(this.options.styleClass) {
+                this.container.addClass(this.options.styleClass);
+            }
+
+            if(this.options.data) {
+                this._populateInputFromData();
+            }
+
+            this._populateContainerFromOptions();
+
+            this._restrictHeight();
+
+            this._bindEvents();
+        },
+
+        _populateInputFromData: function() {
+            for(var i = 0; i < this.options.data.length; i++) {
+                var choice = this.options.data[i];
+                if(choice.label) {
+                    this.element.append('<option value="' + choice.value + '">' + choice.label + '</option>');
+                } else {
+                    this.element.append('<option value="' + choice + '">' + choice + '</option>');
+                }
+            }
+        },
+
+        _populateContainerFromOptions: function() {
+            this.choices = this.element.children('option');
+            for(var i = 0; i < this.choices.length; i++) {
+                var choice = this.choices.eq(i);
+                this.listContainer.append('<li class="pui-listbox-item ui-corner-all">' + this._createItemContent(choice.get(0)) + '</li>');
+            }
+            this.items = this.listContainer.find('.pui-listbox-item:not(.ui-state-disabled)');
+        },
+
+        _restrictHeight: function() {
+            if(this.container.height() > this.options.scrollHeight) {
+                this.container.height(this.options.scrollHeight);
+            }
+        },
+
+        _bindEvents: function() {
+            var $this = this;
+
+            //items
+            this.items.on('mouseover.puilistbox', function() {
+                var item = $(this);
+                if(!item.hasClass('ui-state-highlight')) {
+                    item.addClass('ui-state-hover');
+                }
+            })
+            .on('mouseout.puilistbox', function() {
+                $(this).removeClass('ui-state-hover');
+            })
+            .on('dblclick.puilistbox', function(e) {       
+                $this.element.trigger('dblclick');
+
+                PUI.clearSelection();
+                e.preventDefault();
+            })
+            .on('click.puilistbox', function(e) {       
+                if($this.options.multiple)
+                    $this._clickMultiple(e, $(this));
+                else
+                    $this._clickSingle(e, $(this));
+            
+                
+            });
+
+            //input
+            this.element.on('focus.puilistbox', function() {
+                $this.container.addClass('ui-state-focus');
+            }).on('blur.puilistbox', function() {
+                $this.container.removeClass('ui-state-focus');
+            });
+        },
+        
+        _clickSingle: function(event, item) {
+            var selectedItem = this.items.filter('.ui-state-highlight');
+
+            if(item.index() !== selectedItem.index()) {
+                if(selectedItem.length) {
+                    this.unselectItem(selectedItem);
+                }
+
+                this.selectItem(item);
+                this.element.trigger('change');
+            }
+
+            this.element.trigger('click');
+
+            PUI.clearSelection();
+            
+            event.preventDefault();
+        },
+                
+        _clickMultiple: function(event, item) {            
+            var selectedItems = this.items.filter('.ui-state-highlight'),
+            metaKey = (event.metaKey||event.ctrlKey),
+            unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
+
+            if(!event.shiftKey) {
+                if(!metaKey) {
+                    this.unselectAll();
+                }
+
+                if(metaKey && item.hasClass('ui-state-highlight')) {
+                    this.unselectItem(item);
+                } 
+                else {
+                    this.selectItem(item);
+                    this.cursorItem = item;
+                }
+            }
+            else {
+                //range selection
+                if(this.cursorItem) {
+                    this.unselectAll();
+ 
+                    var currentItemIndex = item.index(),
+                    cursorItemIndex = this.cursorItem.index(),
+                    startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
+                    endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
+                    
+                    for(var i = startIndex ; i < endIndex; i++) {
+                        this.selectItem(this.items.eq(i));
+                    }
+                } 
+                else {
+                    this.selectItem(item);
+                    this.cursorItem = item;
+                }
+            }
+            
+            if(!unchanged) {
+                this.element.trigger('change');
+            }
+
+            this.element.trigger('click');
+            PUI.clearSelection();
+            event.preventDefault();
+        },
+
+        unselectAll: function() {
+            this.items.removeClass('ui-state-highlight ui-state-hover');
+            this.choices.filter(':selected').prop('selected', false);
+        },
+
+        selectItem: function(value) {
+            var item = null;
+            if($.type(value) === 'number') {
+                item = this.items.eq(value);
+            }
+            else {
+                item = value;
+            }
+
+            item.addClass('ui-state-highlight').removeClass('ui-state-hover');
+            this.choices.eq(item.index()).prop('selected', true);
+            this._trigger('itemSelect', null, this.choices.eq(item.index()));
+        },
+
+        unselectItem: function(value) {
+            var item = null;
+            if($.type(value) === 'number') {
+                item = this.items.eq(value);
+            }
+            else {
+                item = value;
+            }
+            
+            item.removeClass('ui-state-highlight');
+            this.choices.eq(item.index()).prop('selected', false);
+            this._trigger('itemUnselect', null, this.choices.eq(item.index()));
+        },
+
+        _setOption: function (key, value) {
+            $.Widget.prototype._setOption.apply(this, arguments);
+            if (key === 'data') {
+                this.element.empty();
+                this.listContainer.empty();
+                this._populateInputFromData();
+
+                this._populateContainerFromOptions();
+
+                this._restrictHeight();
+                this._bindEvents();
+            }
+        },
+
+        _unbindEvents: function() {
+            this.items.off('mouseover.puilistbox click.puilistbox dblclick.puilistbox');
+        },
+
+        disable: function () {
+            this._unbindEvents();
+            this.items.addClass('ui-state-disabled');
+        },
+
+        enable: function () {
+            this._bindEvents();
+            this.items.removeClass('ui-state-disabled');
+        },
+        
+        _createItemContent: function(choice) {
+            if(this.options.template) {
+                var template = this.options.template.html();
+                Mustache.parse(template);
+                return Mustache.render(template, choice);
+            }
+            else if(this.options.content) {
+                return this.options.content.call(this, choice);
+            }
+            else {
+                return choice.label;
+            }
+        }
+    });
+        
+})();

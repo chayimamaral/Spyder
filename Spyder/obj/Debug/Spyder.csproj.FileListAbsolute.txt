@@ -63,3 +63,4 @@ C:\Desenvolvimento\dotNet\Spyder\Spyder\bin\System.Web.Helpers.xml
 C:\Desenvolvimento\dotNet\Spyder\Spyder\bin\System.Web.Mvc.xml
 C:\Desenvolvimento\dotNet\Spyder\Spyder\obj\Debug\Spyder.dll
 C:\Desenvolvimento\dotNet\Spyder\Spyder\obj\Debug\Spyder.pdb
+C:\Desenvolvimento\dotNet\Spyder\Spyder\obj\Debug\Spyder.csprojResolveAssemblyReference.cache

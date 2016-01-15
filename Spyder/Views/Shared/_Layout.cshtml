@@ -6,64 +6,56 @@
     <title>@ViewBag.Title Spyder</title>
     <link href="~/Content/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="~/Content/css/font-awesome.css" type="text/css" rel="stylesheet" />
-    <link href="~/Content/primeui-2.2-min.css" type="text/css" rel="stylesheet" />
+    <link href="~/Content/primeui-3.0.0.css" type="text/css" rel="stylesheet" />
     <link href="~/Content/themes/bluesky/theme.css" type="text/css" rel="stylesheet" />
     <link href="~/Content/spyderpui.css" type="text/css" rel="stylesheet" />
 
     <script src="~/Scripts/jquery-1.11.3.min.js" vtype="text/javascript"></script>
     <script src="~/Scripts/jquery-ui.js" type="text/javascript"></script>
-    <script src="~/Scripts/primeui-2.2-min.js" type="text/javascript"></script>
+    <script src="~/Scripts/primeui-3.0.0.js" type="text/javascript"></script>
+    <script src="~/Scripts/x-tag-core.js" type="text/javascript"></script>
+    <script src="~/Scripts/primeelements-3.0.0.js" type="text/javascript"></script>
+    <script src="~/Scripts/plugins/mustache.min.js" type="text/javascript"></script>
     <script src="~/Scripts/spyderjs/layout.js"></script>
 </head>
 <body>
     <div>
         <h3 class="first">Spyder</h3>
-        <div class="pui-menubar ui-widget ui-widget-content ui-corner-all">
-            <ul id="barramenu">
-                <li>
-                    <a data-icon="fa-home">@Html.ActionLink("Principal", "Index", "Home")</a>
-                </li>
-                <li>
-                    <a data-icon="fa-file-o">NFe</a>
-                    <ul class="pui-menu">
-                        <li><a data-icon="fa-mail-forward">Recebidas</a></li>
-                        <li><a data-icon="fa-mail-reply">Emitidas</a></li>
-                        <li><a data-icon="fa-gear">Sefaz</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a data-icon="fa-file-o">NFSe</a>
-                    <ul class="pui-menu">
-                        <li><a data-icon="fa-mail-forward">Recebidas</a></li>
-                        <li><a data-icon="fa-mail-reply">Emitidas</a></li>
-                        <li><a data-icon="fa-gear">Sefaz</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a data-icon="fa-file-o">CTe</a>
-                    <ul class="pui-menu">
-                        <li><a data-icon="fa-mail-forward">Recebidas</a></li>
-                        <li><a data-icon="fa-mail-reply">Emitidas</a></li>
-                        <li><a data-icon="fa-gear">Sefaz</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a data-icon="fa-gear">Cadastros Básicos</a>
-                    <ul class="pui-menu">
-                        <li>@Html.ActionLink("Estados (UF)", "Index", "Estados")</li>
-                        <li>@Html.ActionLink("Cidades", "Index", "Cidades")</li>
-                        <li><a href="#">Relações</a></li>
-                        <li><a href="#">Banco</a></li>
-                        <li><a href="#">Meus Dados</a></li>
-                    </ul>
-                </li>
-                <li>
 
-                <li>
-                    <a data-icon="fa-power-off">Quit</a>
-                </li>
-            </ul>
-        </div>
+        <p-menubar>
+            <p-menuitem value="Principal" icon="fa-home">                
+                <href=@Html.ActionLink("Principal", "Index", "Home")></href>
+            </p-menuitem>
+            <p-submenu value="NFe" icon="fa-file-o">
+                <p-menuitem value="Recebidas" icon="fa-mail-forward"></p-menuitem>
+                <p-menuitem value="Emitidas" icon="fa-mail-reply"></p-menuitem>
+                <p-menuitem value="Sefaz" icon="fa-gear"></p-menuitem>
+            </p-submenu>
+
+            <p-submenu value="NFSe" icon="fa-file-o">
+                <p-menuitem value="Recebidas" icon=" fa-mail-forward"></p-menuitem>
+                <p-menuitem value="Emitidas" icon=" fa-mail-reply"></p-menuitem>
+                <p-menuitem value="Sefaz" icon=" fa-gear"></p-menuitem>
+            </p-submenu>
+
+            <p-submenu value="CTe" icon="fa-file-o">
+                <p-menuitem value="Recebidas" icon="fa-mail-forward"></p-menuitem>
+                <p-menuitem value="Emitidas" icon="fa-mail-reply"></p-menuitem>
+                <p-menuitem value="Sefaz" icon="fa-gear"></p-menuitem>
+            </p-submenu>
+
+            <p-submenu value="Cadastros Básicos" icon="fa-gear">
+                <p-menuitem value="Estados (UF)">
+                    <href="@Html.ActionLink("Estados (UF)", "Index", "Estados")"></href>
+                </p-menuitem>
+                <p-menuitem value="Relações"></p-menuitem>
+                <p-menuitem value="Banco"></p-menuitem>
+                <p-menuitem value="Meus Dados"></p-menuitem>
+            </p-submenu>
+
+            <p-menuitem value="Quit" icon="fa-power-off"></p-menuitem>
+        </p-menubar>
+
     </div>
     <br /><br />
 

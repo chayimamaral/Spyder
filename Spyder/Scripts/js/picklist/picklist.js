@@ -1,188 +1,571 @@
-$(function(){$.widget("primeui.puipicklist",{options:{effect:"fade",effectSpeed:"fast",sourceCaption:null,targetCaption:null,filter:false,filterFunction:null,filterMatchMode:"startsWith",dragdrop:true,sourceData:null,targetData:null,content:null},_create:function(){this.element.uniqueId().addClass("pui-picklist ui-widget ui-helper-clearfix");
-this.inputs=this.element.children("select");
-this.items=$();
-this.sourceInput=this.inputs.eq(0);
-this.targetInput=this.inputs.eq(1);
-if(this.options.sourceData){this._populateInputFromData(this.sourceInput,this.options.sourceData)
-}if(this.options.targetData){this._populateInputFromData(this.targetInput,this.options.targetData)
-}this.sourceList=this._createList(this.sourceInput,"pui-picklist-source",this.options.sourceCaption,this.options.sourceData);
-this._createButtons();
-this.targetList=this._createList(this.targetInput,"pui-picklist-target",this.options.targetCaption,this.options.targetData);
-if(this.options.showSourceControls){this.element.prepend(this._createListControls(this.sourceList))
-}if(this.options.showTargetControls){this.element.append(this._createListControls(this.targetList))
-}this._bindEvents()
-},_populateInputFromData:function(b,d){for(var c=0;
-c<d.length;
-c++){var a=d[c];
-if(a.label){b.append('<option value="'+a.value+'">'+a.label+"</option>")
-}else{b.append('<option value="'+a+'">'+a+"</option>")
-}}},_createList:function(d,b,c,e){d.wrap('<div class="ui-helper-hidden"></div>');
-var a=$('<div class="pui-picklist-listwrapper '+b+'"></div>'),f=$('<ul class="ui-widget-content pui-picklist-list pui-inputtext"></ul>');
-if(this.options.filter){a.append('<div class="pui-picklist-filter-container"><input type="text" class="pui-picklist-filter" /><span class="pui-icon fa fa-fw fa-search"></span></div>');
-a.find("> .pui-picklist-filter-container > input").puiinputtext()
-}if(c){a.append('<div class="pui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr">'+c+"</div>");
-f.addClass("ui-corner-bottom")
-}else{f.addClass("ui-corner-all")
-}this._populateContainerFromOptions(d,f,e);
-a.append(f).appendTo(this.element);
-return f
-},_populateContainerFromOptions:function(b,h,f){var g=b.children("option");
-for(var c=0;
-c<g.length;
-c++){var a=g.eq(c),e=this.options.content?this.options.content.call(this,f[c]):a.text(),d=$('<li class="pui-picklist-item ui-corner-all">'+e+"</li>").data({"item-label":a.text(),"item-value":a.val()});
-this.items=this.items.add(d);
-h.append(d)
-}},_createButtons:function(){var b=this,a=$('<ul class="pui-picklist-buttons"></ul>');
-a.append(this._createButton("fa-angle-right","pui-picklist-button-add",function(){b._add()
-})).append(this._createButton("fa-angle-double-right","pui-picklist-button-addall",function(){b._addAll()
-})).append(this._createButton("fa-angle-left","pui-picklist-button-remove",function(){b._remove()
-})).append(this._createButton("fa-angle-double-left","pui-picklist-button-removeall",function(){b._removeAll()
-}));
-this.element.append(a)
-},_createListControls:function(b){var c=this,a=$('<ul class="pui-picklist-buttons"></ul>');
-a.append(this._createButton("fa-angle-up","pui-picklist-button-move-up",function(){c._moveUp(b)
-})).append(this._createButton("fa-angle-double-up","pui-picklist-button-move-top",function(){c._moveTop(b)
-})).append(this._createButton("fa-angle-down","pui-picklist-button-move-down",function(){c._moveDown(b)
-})).append(this._createButton("fa-angle-double-down","pui-picklist-button-move-bottom",function(){c._moveBottom(b)
-}));
-return a
-},_createButton:function(d,a,c){var b=$('<button class="'+a+'" type="button"></button>').puibutton({icon:d,click:function(){c();
-$(this).removeClass("ui-state-hover ui-state-focus")
-}});
-return b
-},_bindEvents:function(){var a=this;
-this.items.on("mouseover.puipicklist",function(c){var b=$(this);
-if(!b.hasClass("ui-state-highlight")){$(this).addClass("ui-state-hover")
-}}).on("mouseout.puipicklist",function(b){$(this).removeClass("ui-state-hover")
-}).on("click.puipicklist",function(d){var k=$(this),f=(d.metaKey||d.ctrlKey);
-if(!d.shiftKey){if(!f){a.unselectAll()
-}if(f&&k.hasClass("ui-state-highlight")){a.unselectItem(k)
-}else{a.selectItem(k);
-a.cursorItem=k
-}}else{a.unselectAll();
-if(a.cursorItem&&(a.cursorItem.parent().is(k.parent()))){var g=k.index(),l=a.cursorItem.index(),j=(g>l)?l:g,c=(g>l)?(g+1):(l+1),h=k.parent();
-for(var b=j;
-b<c;
-b++){a.selectItem(h.children("li.ui-picklist-item").eq(b))
-}}else{a.selectItem(k);
-a.cursorItem=k
-}}}).on("dblclick.pickList",function(){var b=$(this);
-if($(this).closest(".pui-picklist-listwrapper").hasClass("pui-picklist-source")){a._transfer(b,a.sourceList,a.targetList,"dblclick")
-}else{a._transfer(b,a.targetList,a.sourceList,"dblclick")
-}PUI.clearSelection()
-});
-if(this.options.filter){this._setupFilterMatcher();
-this.element.find("> .pui-picklist-source > .pui-picklist-filter-container > input").on("keyup",function(b){a._filter(this.value,a.sourceList)
-});
-this.element.find("> .pui-picklist-target > .pui-picklist-filter-container > input").on("keyup",function(b){a._filter(this.value,a.targetList)
-})
-}if(this.options.dragdrop){this.element.find("> .pui-picklist-listwrapper > ul.pui-picklist-list").sortable({cancel:".ui-state-disabled",connectWith:"#"+this.element.attr("id")+" .pui-picklist-list",revert:true,containment:this.element,update:function(b,c){a.unselectItem(c.item);
-a._saveState()
-},receive:function(b,c){a._triggerTransferEvent(c.item,c.sender,c.item.closest("ul.pui-picklist-list"),"dragdrop")
-}})
-}},selectItem:function(a){a.removeClass("ui-state-hover").addClass("ui-state-highlight")
-},unselectItem:function(a){a.removeClass("ui-state-highlight")
-},unselectAll:function(){var b=this.items.filter(".ui-state-highlight");
-for(var a=0;
-a<b.length;
-a++){this.unselectItem(b.eq(a))
-}},_add:function(){var a=this.sourceList.children("li.pui-picklist-item.ui-state-highlight");
-this._transfer(a,this.sourceList,this.targetList,"command")
-},_addAll:function(){var a=this.sourceList.children("li.pui-picklist-item:visible:not(.ui-state-disabled)");
-this._transfer(a,this.sourceList,this.targetList,"command")
-},_remove:function(){var a=this.targetList.children("li.pui-picklist-item.ui-state-highlight");
-this._transfer(a,this.targetList,this.sourceList,"command")
-},_removeAll:function(){var a=this.targetList.children("li.pui-picklist-item:visible:not(.ui-state-disabled)");
-this._transfer(a,this.targetList,this.sourceList,"command")
-},_moveUp:function(e){var f=this,d=f.options.effect,b=e.children(".ui-state-highlight"),a=b.length,c=0;
-b.each(function(){var g=$(this);
-if(!g.is(":first-child")){if(d){g.hide(f.options.effect,{},f.options.effectSpeed,function(){g.insertBefore(g.prev()).show(f.options.effect,{},f.options.effectSpeed,function(){c++;
-if(c===a){f._saveState()
-}})
-})
-}else{g.hide().insertBefore(g.prev()).show()
-}}});
-if(!d){this._saveState()
-}},_moveTop:function(e){var f=this,d=f.options.effect,b=e.children(".ui-state-highlight"),a=b.length,c=0;
-e.children(".ui-state-highlight").each(function(){var g=$(this);
-if(!g.is(":first-child")){if(d){g.hide(f.options.effect,{},f.options.effectSpeed,function(){g.prependTo(g.parent()).show(f.options.effect,{},f.options.effectSpeed,function(){c++;
-if(c===a){f._saveState()
-}})
-})
-}else{g.hide().prependTo(g.parent()).show()
-}}});
-if(!d){this._saveState()
-}},_moveDown:function(e){var f=this,d=f.options.effect,b=e.children(".ui-state-highlight"),a=b.length,c=0;
-$(e.children(".ui-state-highlight").get().reverse()).each(function(){var g=$(this);
-if(!g.is(":last-child")){if(d){g.hide(f.options.effect,{},f.options.effectSpeed,function(){g.insertAfter(g.next()).show(f.options.effect,{},f.options.effectSpeed,function(){c++;
-if(c===a){f._saveState()
-}})
-})
-}else{g.hide().insertAfter(g.next()).show()
-}}});
-if(!d){this._saveState()
-}},_moveBottom:function(e){var f=this,d=f.options.effect,b=e.children(".ui-state-highlight"),a=b.length,c=0;
-e.children(".ui-state-highlight").each(function(){var g=$(this);
-if(!g.is(":last-child")){if(d){g.hide(f.options.effect,{},f.options.effectSpeed,function(){g.appendTo(g.parent()).show(f.options.effect,{},f.options.effectSpeed,function(){c++;
-if(c===a){f._saveState()
-}})
-})
-}else{g.hide().appendTo(g.parent()).show()
-}}});
-if(!d){this._saveState()
-}},_transfer:function(b,g,f,d){var e=this,a=b.length,c=0;
-if(this.options.effect){b.hide(this.options.effect,{},this.options.effectSpeed,function(){var h=$(this);
-e.unselectItem(h);
-h.appendTo(f).show(e.options.effect,{},e.options.effectSpeed,function(){c++;
-if(c===a){e._saveState();
-e._triggerTransferEvent(b,g,f,d)
-}})
-})
-}else{b.hide().removeClass("ui-state-highlight ui-state-hover").appendTo(f).show();
-this._saveState();
-this._triggerTransferEvent(b,g,f,d)
-}},_triggerTransferEvent:function(a,e,d,b){var c={};
-c.items=a;
-c.from=e;
-c.to=d;
-c.type=b;
-this._trigger("transfer",null,c)
-},_saveState:function(){this.sourceInput.children().remove();
-this.targetInput.children().remove();
-this._generateItems(this.sourceList,this.sourceInput);
-this._generateItems(this.targetList,this.targetInput);
-this.cursorItem=null
-},_generateItems:function(b,a){b.children(".pui-picklist-item").each(function(){var d=$(this),e=d.data("item-value"),c=d.data("item-label");
-a.append('<option value="'+e+'" selected="selected">'+c+"</option>")
-})
-},_setupFilterMatcher:function(){this.filterMatchers={startsWith:this._startsWithFilter,contains:this._containsFilter,endsWith:this._endsWithFilter,custom:this.options.filterFunction};
-this.filterMatcher=this.filterMatchers[this.options.filterMatchMode]
-},_filter:function(f,e){var g=$.trim(f).toLowerCase(),a=e.children("li.pui-picklist-item");
-if(g===""){a.filter(":hidden").show()
-}else{for(var b=0;
-b<a.length;
-b++){var d=a.eq(b),c=d.data("item-label");
-if(this.filterMatcher(c,g)){d.show()
-}else{d.hide()
-}}}},_startsWithFilter:function(b,a){return b.toLowerCase().indexOf(a)===0
-},_containsFilter:function(b,a){return b.toLowerCase().indexOf(a)!==-1
-},_endsWithFilter:function(b,a){return b.indexOf(a,b.length-a.length)!==-1
-},_setOption:function(a,b){$.Widget.prototype._setOption.apply(this,arguments);
-if(a==="sourceData"){this._setOptionData(this.sourceInput,this.sourceList,this.options.sourceData)
-}if(a==="targetData"){this._setOptionData(this.targetInput,this.targetList,this.options.targetData)
-}},_setOptionData:function(a,c,b){a.empty();
-c.empty();
-this._populateInputFromData(a,b);
-this._populateContainerFromOptions(a,c,b);
-this._bindEvents()
-},_unbindEvents:function(){this.items.off("mouseover.puipicklist mouseout.puipicklist click.puipicklist dblclick.pickList")
-},disable:function(){this._unbindEvents();
-this.items.addClass("ui-state-disabled");
-this.element.find(".pui-picklist-buttons > button").each(function(a,b){$(b).puibutton("disable")
-})
-},enable:function(){this._bindEvents();
-this.items.removeClass("ui-state-disabled");
-this.element.find(".pui-picklist-buttons > button").each(function(a,b){$(b).puibutton("enable")
-})
-}})
-});
+/**
+ * PrimeUI picklist widget
+ */
+(function() {
+
+    $.widget("primeui.puipicklist", {
+       
+        options: {
+            effect: 'fade',
+            effectSpeed: 'fast',
+            sourceCaption: null,
+            targetCaption: null,
+            filter: false,
+            filterFunction: null,
+            filterMatchMode: 'startsWith',
+            dragdrop: true,
+            sourceData: null,
+            targetData: null,
+            content: null,
+            template: null,
+            responsive: false
+        },
+
+        _create: function() {
+            this.element.uniqueId().addClass('pui-picklist ui-widget ui-helper-clearfix');
+            if(this.options.responsive) {
+                this.element.addClass('pui-picklist-responsive');
+            }
+            this.inputs = this.element.children('select');
+            this.items = $();
+            this.sourceInput = this.inputs.eq(0);
+            this.targetInput = this.inputs.eq(1);
+            
+            if(this.options.sourceData) {
+                this._populateInputFromData(this.sourceInput, this.options.sourceData);
+            }
+            
+            if(this.options.targetData) {
+                this._populateInputFromData(this.targetInput, this.options.targetData);
+            }
+                        
+            this.sourceList = this._createList(this.sourceInput, 'pui-picklist-source', this.options.sourceCaption);
+            this._createButtons();
+            this.targetList = this._createList(this.targetInput, 'pui-picklist-target', this.options.targetCaption);
+            
+            if(this.options.showSourceControls) {
+                this.element.prepend(this._createListControls(this.sourceList, 'pui-picklist-source-controls'));
+            }
+            
+            if(this.options.showTargetControls) {
+                this.element.append(this._createListControls(this.targetList, 'pui-picklist-target-controls'));
+            }
+            
+            this._bindEvents();
+        },
+                
+        _populateInputFromData: function(input, data) {
+            for(var i = 0; i < data.length; i++) {
+                var choice = data[i];
+                if(choice.label)
+                    input.append('<option value="' + choice.value + '">' + choice.label + '</option>');
+                else
+                    input.append('<option value="' + choice + '">' + choice + '</option>');
+            }
+        },
+                
+        _createList: function(input, cssClass, caption) {                        
+            var listWrapper = $('<div class="pui-picklist-listwrapper ' + cssClass + '-wrapper"></div>'),
+                listContainer = $('<ul class="ui-widget-content pui-picklist-list ' + cssClass + '"></ul>');
+
+            if(this.options.filter) {
+                listWrapper.append('<div class="pui-picklist-filter-container"><input type="text" class="pui-picklist-filter" /><span class="pui-icon fa fa-fw fa-search"></span></div>');
+                listWrapper.find('> .pui-picklist-filter-container > input').puiinputtext();
+            } 
+    
+            if(caption) {
+                listWrapper.append('<div class="pui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr">' + caption + '</div>');
+                listContainer.addClass('ui-corner-bottom');
+            }
+            else {
+                listContainer.addClass('ui-corner-all');
+            }
+
+            this._populateContainerFromOptions(input, listContainer);
+            
+            
+            listWrapper.append(listContainer);
+            input.addClass('ui-helper-hidden').appendTo(listWrapper);
+            listWrapper.appendTo(this.element);
+            
+            return listContainer;
+        },
+
+        _populateContainerFromOptions: function(input, listContainer, data) {
+            var choices = input.children('option');
+            for(var i = 0; i < choices.length; i++) {
+                var choice = choices.eq(i),
+                content = this._createItemContent(choice.get(0)),
+                item = $('<li class="pui-picklist-item ui-corner-all"></li>').data({
+                    'item-label': choice.text(),
+                    'item-value': choice.val()
+                });
+
+                if($.type(content) === 'string')
+                    item.html(content);
+                else
+                    item.append(content);
+
+                this.items = this.items.add(item);
+                listContainer.append(item);
+            }
+        },
+
+        _createButtons: function() {
+            var $this = this,
+            buttonContainer = $('<div class="pui-picklist-buttons"><div class="pui-picklist-buttons-cell"></div>');
+            
+            buttonContainer.children('div').append(this._createButton('fa-angle-right', 'pui-picklist-button-add', function(){$this._add();}))
+                            .append(this._createButton('fa-angle-double-right', 'pui-picklist-button-addall', function(){$this._addAll();}))
+                            .append(this._createButton('fa-angle-left', 'pui-picklist-button-remove', function(){$this._remove();}))
+                            .append(this._createButton('fa-angle-double-left', 'pui-picklist-button-removeall', function(){$this._removeAll();}));
+                    
+            this.element.append(buttonContainer);
+        },
+                
+        _createListControls: function(list, cssClass) {
+            var $this = this,
+            buttonContainer = $('<div class="' + cssClass + ' pui-picklist-buttons"><div class="pui-picklist-buttons-cell"></div>');
+            
+            buttonContainer.children('div').append(this._createButton('fa-angle-up', 'pui-picklist-button-move-up', function(){$this._moveUp(list);}))
+                            .append(this._createButton('fa-angle-double-up', 'pui-picklist-button-move-top', function(){$this._moveTop(list);}))
+                            .append(this._createButton('fa-angle-down', 'pui-picklist-button-move-down', function(){$this._moveDown(list);}))
+                            .append(this._createButton('fa-angle-double-down', 'pui-picklist-button-move-bottom', function(){$this._moveBottom(list);}));
+                    
+            return buttonContainer;
+        },
+                
+        _createButton: function(icon, cssClass, fn) {
+            var btn = $('<button class="' + cssClass + '" type="button"></button>').puibutton({
+                'icon': icon,
+                'click': function() {
+                    fn();
+                    $(this).removeClass('ui-state-hover ui-state-focus');
+                }
+
+            });
+            
+            return btn;
+        },
+                
+        _bindEvents: function() {
+            var $this = this;
+        
+            this.items.on('mouseover.puipicklist', function(e) {
+                var element = $(this);
+
+                if(!element.hasClass('ui-state-highlight')) {
+                    $(this).addClass('ui-state-hover');
+                }
+            })
+            .on('mouseout.puipicklist', function(e) {
+                $(this).removeClass('ui-state-hover');
+            })
+            .on('click.puipicklist', function(e) {
+                var item = $(this),
+                metaKey = (e.metaKey||e.ctrlKey);
+
+                if(!e.shiftKey) {
+                    if(!metaKey) {
+                        $this.unselectAll();
+                    }
+
+                    if(metaKey && item.hasClass('ui-state-highlight')) {
+                        $this.unselectItem(item);
+                    } 
+                    else {
+                        $this.selectItem(item);
+                        $this.cursorItem = item;
+                    }
+                }
+                else {
+                    $this.unselectAll();
+
+                    if($this.cursorItem && ($this.cursorItem.parent().is(item.parent()))) {
+                        var currentItemIndex = item.index(),
+                        cursorItemIndex = $this.cursorItem.index(),
+                        startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
+                        endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1),
+                        parentList = item.parent();
+
+                        for(var i = startIndex ; i < endIndex; i++) {
+                            $this.selectItem(parentList.children('li.ui-picklist-item').eq(i));
+                        }
+                    }
+                    else {
+                        $this.selectItem(item);
+                        $this.cursorItem = item;
+                    }
+                }
+            })
+            .on('dblclick.pickList', function() {
+                var item = $(this);
+
+                if($(this).closest('.pui-picklist-listwrapper').hasClass('pui-picklist-source'))
+                    $this._transfer(item, $this.sourceList, $this.targetList, 'dblclick');
+                else
+                    $this._transfer(item, $this.targetList, $this.sourceList, 'dblclick');
+
+                PUI.clearSelection();
+            });
+            
+            if(this.options.filter) {
+                this._setupFilterMatcher();
+                
+                this.element.find('> .pui-picklist-source-wrapper > .pui-picklist-filter-container > input').on('keyup', function(e) {
+                    $this._filter(this.value, $this.sourceList);
+                });
+
+                this.element.find('> .pui-picklist-target-wrapper > .pui-picklist-filter-container > input').on('keyup', function(e) {
+                    $this._filter(this.value, $this.targetList);
+                });
+            }
+            
+            if(this.options.dragdrop) {                
+                this.element.find('> .pui-picklist-listwrapper > ul.pui-picklist-list').sortable({
+                    cancel: '.ui-state-disabled',
+                    connectWith: '#' + this.element.attr('id') + ' .pui-picklist-list',
+                    revert: 1,
+                    update: function(event, ui) {
+                        $this.unselectItem(ui.item);
+
+                        $this._saveState();
+                    },
+                    receive: function(event, ui) {
+                        $this._triggerTransferEvent(ui.item, ui.sender, ui.item.closest('ul.pui-picklist-list'), 'dragdrop');
+                    }
+                });
+            }
+        },
+                
+        selectItem: function(item) {
+            item.removeClass('ui-state-hover').addClass('ui-state-highlight');
+        },
+
+        unselectItem: function(item) {
+            item.removeClass('ui-state-highlight');
+        },
+
+        unselectAll: function() {
+            var selectedItems = this.items.filter('.ui-state-highlight');
+            for(var i = 0; i < selectedItems.length; i++) {
+                this.unselectItem(selectedItems.eq(i));
+            }
+        },
+                
+        _add: function() {
+            var items = this.sourceList.children('li.pui-picklist-item.ui-state-highlight');
+
+            this._transfer(items, this.sourceList, this.targetList, 'command');
+        },
+
+        _addAll: function() {
+            var items = this.sourceList.children('li.pui-picklist-item:visible:not(.ui-state-disabled)');
+
+            this._transfer(items, this.sourceList, this.targetList, 'command');
+        },
+
+        _remove: function() {
+            var items = this.targetList.children('li.pui-picklist-item.ui-state-highlight');
+
+            this._transfer(items, this.targetList, this.sourceList, 'command');
+        },
+
+        _removeAll: function() {
+            var items = this.targetList.children('li.pui-picklist-item:visible:not(.ui-state-disabled)');
+
+            this._transfer(items, this.targetList, this.sourceList, 'command');
+        },
+                
+        _moveUp: function(list) {
+            var $this = this,
+            animated = $this.options.effect,
+            items = list.children('.ui-state-highlight'),
+            itemsCount = items.length,
+            movedCount = 0;
+
+            items.each(function() {
+                var item = $(this);
+                
+                if(!item.is(':first-child')) {
+                    if(animated) {
+                        item.hide($this.options.effect, {}, $this.options.effectSpeed, function() {
+                            item.insertBefore(item.prev()).show($this.options.effect, {}, $this.options.effectSpeed, function() {
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    $this._saveState();
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        item.hide().insertBefore(item.prev()).show();
+                    }
+
+                }
+            });
+
+            if(!animated) {
+                this._saveState();
+            }
+
+        },
+
+        _moveTop: function(list) {
+            var $this = this,
+            animated = $this.options.effect,
+            items = list.children('.ui-state-highlight'),
+            itemsCount = items.length,
+            movedCount = 0;
+
+            list.children('.ui-state-highlight').each(function() {
+                var item = $(this);
+
+                if(!item.is(':first-child')) {
+                    if(animated) {
+                        item.hide($this.options.effect, {}, $this.options.effectSpeed, function() {
+                            item.prependTo(item.parent()).show($this.options.effect, {}, $this.options.effectSpeed, function(){
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    $this._saveState();
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        item.hide().prependTo(item.parent()).show();
+                    }
+                }
+            });
+
+            if(!animated) {
+                this._saveState();
+            }
+        },
+
+        _moveDown: function(list) {
+            var $this = this,
+            animated = $this.options.effect,
+            items = list.children('.ui-state-highlight'),
+            itemsCount = items.length,
+            movedCount = 0;
+
+            $(list.children('.ui-state-highlight').get().reverse()).each(function() {
+                var item = $(this);
+
+                if(!item.is(':last-child')) {
+                    if(animated) {
+                        item.hide($this.options.effect, {}, $this.options.effectSpeed, function() {
+                            item.insertAfter(item.next()).show($this.options.effect, {}, $this.options.effectSpeed, function() {
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    $this._saveState();
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        item.hide().insertAfter(item.next()).show();
+                    }
+                }
+
+            });
+
+            if(!animated) {
+                this._saveState();
+            }
+        },
+
+        _moveBottom: function(list) {
+            var $this = this,
+            animated = $this.options.effect,
+            items = list.children('.ui-state-highlight'),
+            itemsCount = items.length,
+            movedCount = 0;
+
+            list.children('.ui-state-highlight').each(function() {
+                var item = $(this);
+
+                if(!item.is(':last-child')) {
+
+                    if(animated) {
+                        item.hide($this.options.effect, {}, $this.options.effectSpeed, function() {
+                            item.appendTo(item.parent()).show($this.options.effect, {}, $this.options.effectSpeed, function() {
+                                movedCount++;
+
+                                if(movedCount === itemsCount) {
+                                    $this._saveState();
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        item.hide().appendTo(item.parent()).show();
+                    }
+                }
+
+            });
+
+            if(!animated) {
+                this._saveState();
+            }
+        },
+                
+        _transfer: function(items, from, to, type) {  
+            var $this = this,
+            itemsCount = items.length,
+            transferCount = 0;
+
+            if(this.options.effect) {
+                items.hide(this.options.effect, {}, this.options.effectSpeed, function() {
+                    var item = $(this);
+                    $this.unselectItem(item);
+
+                    item.appendTo(to).show($this.options.effect, {}, $this.options.effectSpeed, function() {
+                        transferCount++;
+
+                        if(transferCount === itemsCount) {
+                            $this._saveState();
+                            $this._triggerTransferEvent(items, from, to, type);
+                        }
+                    });
+                });
+            }
+            else {
+                items.hide().removeClass('ui-state-highlight ui-state-hover').appendTo(to).show();
+
+                this._saveState();
+                this._triggerTransferEvent(items, from, to, type);
+            }
+        },
+
+        _triggerTransferEvent: function(items, from, to, type) {
+            var obj = {};
+            obj.items = items;
+            obj.from = from;
+            obj.to = to;
+            obj.type = type;
+
+            this._trigger('transfer', null, obj);
+        },
+                
+        _saveState: function() {
+            this.sourceInput.children().remove();
+            this.targetInput.children().remove();
+
+            this._generateItems(this.sourceList, this.sourceInput);
+            this._generateItems(this.targetList, this.targetInput);
+            this.cursorItem = null;
+        },
+                
+        _generateItems: function(list, input) {   
+            list.children('.pui-picklist-item').each(function() {
+                var item = $(this),
+                itemValue = item.data('item-value'),
+                itemLabel = item.data('item-label');
+
+                input.append('<option value="' + itemValue + '" selected="selected">' + itemLabel + '</option>');
+            });
+        },
+                
+        _setupFilterMatcher: function() {
+            this.filterMatchers = {
+                'startsWith': this._startsWithFilter,
+                'contains': this._containsFilter,
+                'endsWith': this._endsWithFilter,
+                'custom': this.options.filterFunction
+            };
+
+            this.filterMatcher = this.filterMatchers[this.options.filterMatchMode];
+        },
+                
+        _filter: function(value, list) {
+            var filterValue = $.trim(value).toLowerCase(),
+            items = list.children('li.pui-picklist-item');
+
+            if(filterValue === '') {
+                items.filter(':hidden').show();
+            }
+            else {
+                for(var i = 0; i < items.length; i++) {
+                    var item = items.eq(i),
+                    itemLabel = item.data('item-label');
+
+                    if(this.filterMatcher(itemLabel, filterValue))
+                        item.show();
+                    else 
+                        item.hide();                    
+                }
+            }
+        },
+
+        _startsWithFilter: function(value, filter) {
+            return value.toLowerCase().indexOf(filter) === 0;
+        },
+
+        _containsFilter: function(value, filter) {
+            return value.toLowerCase().indexOf(filter) !== -1;
+        },
+
+        _endsWithFilter: function(value, filter) {
+            return value.indexOf(filter, value.length - filter.length) !== -1;
+        },
+
+        _setOption: function (key, value) {
+            $.Widget.prototype._setOption.apply(this, arguments);
+            if (key === 'sourceData') {
+                this._setOptionData(this.sourceInput, this.sourceList, this.options.sourceData);
+            }
+            if (key === 'targetData') {
+                this._setOptionData(this.targetInput, this.targetList, this.options.targetData);
+            }
+        },
+
+        _setOptionData: function(input, listContainer, data) {
+            input.empty();
+            listContainer.empty();
+            this._populateInputFromData(input, data);
+
+            this._populateContainerFromOptions(input, listContainer, data);
+            this._bindEvents();
+        },
+
+        _unbindEvents: function() {
+            this.items.off("mouseover.puipicklist mouseout.puipicklist click.puipicklist dblclick.pickList");
+        },
+
+        disable: function () {
+            this._unbindEvents();
+            this.items.addClass('ui-state-disabled');
+            this.element.find('.pui-picklist-buttons > button').each(function (idx, btn) {
+                $(btn).puibutton('disable');
+            });
+        },
+
+        enable: function () {
+            this._bindEvents();
+            this.items.removeClass('ui-state-disabled');
+            this.element.find('.pui-picklist-buttons > button').each(function (idx, btn) {
+                $(btn).puibutton('enable');
+            });
+        },
+        
+        _createItemContent: function(choice) {
+            if(this.options.template) {
+                var template = this.options.template.html();
+                Mustache.parse(template);
+                return Mustache.render(template, choice);
+            }
+            else if(this.options.content) {
+                return this.options.content.call(this, choice);
+            }
+            else {
+                return choice.label;
+            }
+        }
+    });
+        
+})();
