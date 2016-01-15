@@ -1,46 +1,135 @@
-$(function(){$.widget("primeui.puiaccordion",{options:{activeIndex:0,multiple:false},_create:function(){if(this.options.multiple){this.options.activeIndex=[]
-}var a=this;
-this.element.addClass("pui-accordion ui-widget ui-helper-reset");
-this.element.children("h3").addClass("pui-accordion-header ui-helper-reset ui-state-default").each(function(c){var f=$(this),e=f.html(),d=(c==a.options.activeIndex)?"ui-state-active ui-corner-top":"ui-corner-all",b=(c==a.options.activeIndex)?"pui-icon fa fa-fw fa-caret-down":"pui-icon fa fa-fw fa-caret-right";
-f.addClass(d).html('<span class="'+b+'"></span><a href="#">'+e+"</a>")
-});
-this.element.children("div").each(function(b){var c=$(this);
-c.addClass("pui-accordion-content ui-helper-reset ui-widget-content");
-if(b!=a.options.activeIndex){c.addClass("ui-helper-hidden")
-}});
-this.headers=this.element.children(".pui-accordion-header");
-this.panels=this.element.children(".pui-accordion-content");
-this.headers.children("a").disableSelection();
-this._bindEvents()
-},_bindEvents:function(){var a=this;
-this.headers.mouseover(function(){var b=$(this);
-if(!b.hasClass("ui-state-active")&&!b.hasClass("ui-state-disabled")){b.addClass("ui-state-hover")
-}}).mouseout(function(){var b=$(this);
-if(!b.hasClass("ui-state-active")&&!b.hasClass("ui-state-disabled")){b.removeClass("ui-state-hover")
-}}).click(function(d){var c=$(this);
-if(!c.hasClass("ui-state-disabled")){var b=c.index()/2;
-if(c.hasClass("ui-state-active")){a.unselect(b)
-}else{a.select(b)
-}}d.preventDefault()
-})
-},select:function(b){var a=this.panels.eq(b);
-this._trigger("change",a);
-if(this.options.multiple){this._addToSelection(b)
-}else{this.options.activeIndex=b
-}this._show(a)
-},unselect:function(b){var a=this.panels.eq(b),c=a.prev();
-c.attr("aria-expanded",false).children(".pui-icon").removeClass("fa-caret-down").addClass("fa-caret-right");
-c.removeClass("ui-state-active ui-corner-top").addClass("ui-corner-all");
-a.attr("aria-hidden",true).slideUp();
-this._removeFromSelection(b)
-},_show:function(b){if(!this.options.multiple){var c=this.headers.filter(".ui-state-active");
-c.children(".pui-icon").removeClass("fa-caret-down").addClass("fa-caret-right");
-c.attr("aria-expanded",false).removeClass("ui-state-active ui-corner-top").addClass("ui-corner-all").next().attr("aria-hidden",true).slideUp()
-}var a=b.prev();
-a.attr("aria-expanded",true).addClass("ui-state-active ui-corner-top").removeClass("ui-state-hover ui-corner-all").children(".pui-icon").removeClass("fa-caret-right").addClass("fa-caret-down");
-b.attr("aria-hidden",false).slideDown("normal")
-},_addToSelection:function(a){this.options.activeIndex.push(a)
-},_removeFromSelection:function(a){this.options.activeIndex=$.grep(this.options.activeIndex,function(b){return b!=a
-})
-}})
-});
+/**
+ * PrimeUI Accordion widget
+ */
+(function() {
+
+    $.widget("primeui.puiaccordion", {
+       
+        options: {
+             activeIndex: 0,
+             multiple: false
+        },
+        
+        _create: function() {
+            if(this.options.multiple) {
+                this.options.activeIndex = [];
+            }
+        
+            var $this = this;
+            this.element.addClass('pui-accordion ui-widget ui-helper-reset');
+            
+            this.element.children('h3').addClass('pui-accordion-header ui-helper-reset ui-state-default').each(function(i) {
+                var header = $(this),
+                title = header.html(),
+                headerClass = (i == $this.options.activeIndex) ? 'ui-state-active ui-corner-top' : 'ui-corner-all',
+                iconClass = (i == $this.options.activeIndex) ? 'pui-icon fa fa-fw fa-caret-down' : 'pui-icon fa fa-fw fa-caret-right';
+                                
+                header.addClass(headerClass).html('<span class="' + iconClass + '"></span><a href="#">' + title + '</a>');
+            });
+            
+            this.element.children('div').each(function(i) {
+                var content = $(this);
+                content.addClass('pui-accordion-content ui-helper-reset ui-widget-content');
+                
+                if(i != $this.options.activeIndex) {
+                    content.addClass('ui-helper-hidden');
+                }
+            });
+            
+            this.headers = this.element.children('.pui-accordion-header');
+            this.panels = this.element.children('.pui-accordion-content');
+            this.headers.children('a').disableSelection();
+            
+            this._bindEvents();
+        },
+        
+        _bindEvents: function() {
+            var $this = this;
+
+            this.headers.mouseover(function() {
+                var element = $(this);
+                if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
+                    element.addClass('ui-state-hover');
+                }
+            }).mouseout(function() {
+                var element = $(this);
+                if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
+                    element.removeClass('ui-state-hover');
+                }
+            }).click(function(e) {
+                var element = $(this);
+                if(!element.hasClass('ui-state-disabled')) {
+                    var tabIndex = element.index() / 2;
+
+                    if(element.hasClass('ui-state-active')) {
+                        $this.unselect(tabIndex);
+                    }
+                    else {
+                        $this.select(tabIndex);
+                    }
+                }
+
+                e.preventDefault();
+            });
+        },
+
+        /**
+         *  Activates a tab with given index
+         */
+        select: function(index) {
+            var panel = this.panels.eq(index);
+
+            this._trigger('change', panel);
+            
+            //update state
+            if(this.options.multiple) {
+                this._addToSelection(index);
+            }
+            else {
+                this.options.activeIndex = index;
+            }
+            this._show(panel);
+        },
+
+        /**
+         *  Deactivates a tab with given index
+         */
+        unselect: function(index) {
+            var panel = this.panels.eq(index),
+            header = panel.prev();
+
+            header.attr('aria-expanded', false).children('.pui-icon').removeClass('fa-caret-down').addClass('fa-caret-right');
+            header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
+            panel.attr('aria-hidden', true).slideUp();
+
+            this._removeFromSelection(index);
+        },
+
+        _show: function(panel) {
+            //deactivate current
+            if(!this.options.multiple) {
+                var oldHeader = this.headers.filter('.ui-state-active');
+                oldHeader.children('.pui-icon').removeClass('fa-caret-down').addClass('fa-caret-right');
+                oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all').next().attr('aria-hidden', true).slideUp();
+            }
+
+            //activate selected
+            var newHeader = panel.prev();
+            newHeader.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
+                    .children('.pui-icon').removeClass('fa-caret-right').addClass('fa-caret-down');
+
+            panel.attr('aria-hidden', false).slideDown('normal');
+        },
+
+        _addToSelection: function(nodeId) {
+            this.options.activeIndex.push(nodeId);
+        },
+
+        _removeFromSelection: function(index) {
+            this.options.activeIndex = $.grep(this.options.activeIndex, function(r) {
+                return r != index;
+            });
+        }
+        
+    });
+})();
